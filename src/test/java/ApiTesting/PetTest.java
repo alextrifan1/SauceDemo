@@ -39,6 +39,15 @@ public class PetTest extends BaseTest {
         return dp.iterator();
     }
 
+    @DataProvider(name = "DeletePet")
+    public Iterator<Object[]> deletePetDp() {
+        Collection<Object[]> dp = new ArrayList<>();
+        dp.add(new String[] {"200", "404"});
+        dp.add(new String[] {"732", "200"});
+
+        return dp.iterator();
+    }
+
     /************************************ GET ************************************/
 
     @Test(dataProvider = "FindPetById")
@@ -100,7 +109,6 @@ public class PetTest extends BaseTest {
 
     }
 
-    //bun pentru cazuri simple
     @Test
     public void createPetOtherVersion() {
         JSONObject requestParams = new JSONObject();
@@ -142,4 +150,10 @@ public class PetTest extends BaseTest {
     }
 
     /************************************ DELETE ************************************/
+
+    @Test(dataProvider = "DeletePet")
+    public void deletePet(String id, String status) {
+        Response response = httpRequest.request(Method.DELETE, "/pet/" + id);
+        Assert.assertEquals(Integer.parseInt(status), response.getStatusCode());
+    }
 }
