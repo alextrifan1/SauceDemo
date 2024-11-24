@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.devtools.v127.fetch.model.AuthChallengeResponse;
 import org.testng.Assert;
@@ -46,6 +47,26 @@ public class PetTest extends BaseTest {
     }
 
     @Test
+    public void findPetByStatus() {
+        String status = "pending";
+        Response response = httpRequest.request(Method.GET, "/pet/findByStatus?status=" + status);
+
+        Assert.assertEquals(200, response.getStatusCode());
+
+        // pt JSON ai nevoi mereu de un string, foloseste asString, nu toString !!
+        String responseBody = response.getBody().asString();
+        JSONArray pets = new JSONArray(responseBody);
+
+        for (int i = 0; i < pets.length(); i++) {
+            JSONObject pet = pets.getJSONObject(i);
+            String petStatus = pet.getString("status");
+            Assert.assertEquals(status, petStatus);
+        }
+
+    }
+
+
+    @Test
     public void createPet() {
         Category cat = new Category(231, "myName");
         Tag tag = new Tag(567, "tagName");
@@ -65,11 +86,11 @@ public class PetTest extends BaseTest {
        httpRequest.body(jsonOutput);
        Response response = httpRequest.request(Method.POST, "/pet");
 
-        System.out.println("Response status: " + response.getStatusCode());  // Debugging
-        Assert.assertEquals(200, response.getStatusCode());  // Assert success status
+        Assert.assertEquals(200, response.getStatusCode());
 
     }
 
+    //bun pentru cazuri simple
     @Test
     public void createPetOtherVersion() {
         JSONObject requestParams = new JSONObject();
