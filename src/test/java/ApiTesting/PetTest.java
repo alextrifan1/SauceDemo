@@ -21,6 +21,18 @@ import java.util.Iterator;
 
 public class PetTest extends BaseTest {
 
+    @DataProvider(name = "PetData")
+    public Iterator<Object[]> petDp() {
+        Collection<Object[]> dp = new ArrayList<>();
+        //                   id,    category: (id, name), name, photUrls,               tags:(id, tagName),                 status
+        dp.add(new String[] {"767", "231", "Dog", "Goldie", "http://myurl.com", "567", "why are you reading this?", "sold"});
+        dp.add(new String[] {"999", "111", "Cat", "MiauMiau", "http://myurl.com", "267", "keep reading, it's cool", "available"});
+        dp.add(new String[] {"1", "333", "Dog", "GoodDogMaadCity", "http://myurl.com", "222", "genericTag", "pending"});
+        dp.add(new String[] {"217", "231", "Fish", "Nemo", "http://myurl.com", "567", "anotherGenericTag", "pending"});
+        dp.add(new String[] {"888", "231", "Cat", "CoolCat", "http://myurl.com", "567", "just a cool cat", "sold"});
+        return dp.iterator();
+    }
+
     @DataProvider(name = "FindPetById")
     public Iterator<Object[]> findPetDp() {
         Collection<Object[]> dp = new ArrayList<>();
@@ -85,15 +97,15 @@ public class PetTest extends BaseTest {
 
     /************************************ POST ************************************/
 
-    @Test
-    public void createPet() {
-        Category cat = new Category(231, "myName");
-        Tag tag = new Tag(567, "tagName");
+    @Test(dataProvider = "PetData")
+    public void createPet(String id, String cId, String cNane, String name, String photo, String tId, String tName, String status) {
+        Category cat = new Category(Integer.parseInt(cId), cNane);
+        Tag tag = new Tag(Integer.parseInt(tId), tName);
         ArrayList<Tag> tags = new ArrayList<>();
         tags.add(tag);
         ArrayList<String> photoUrls = new ArrayList<>();
-        photoUrls.add("http://myurl.com");
-        Pet pet = new Pet(732, cat, "MiauMiau", photoUrls, tags, "available");
+        photoUrls.add(photo);
+        Pet pet = new Pet(732, cat, name, photoUrls, tags, status);
 
         Gson gson = new Gson();
         String jsonOutput = gson.toJson(pet);
