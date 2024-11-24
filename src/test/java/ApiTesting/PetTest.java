@@ -30,6 +30,16 @@ public class PetTest extends BaseTest {
         dp.add(new String[] {"10", "200", "doggie"});
         return dp.iterator();
     }
+    @DataProvider(name= "FindPetByStatus")
+    public Iterator<Object[]> findPetStatusDp() {
+        Collection<Object[]> dp = new ArrayList<>();
+        dp.add(new String[] {"available"});
+        dp.add(new String[] {"pending"});
+        dp.add(new String[] {"sold"});
+        return dp.iterator();
+    }
+
+    /************************************ GET ************************************/
 
     @Test(dataProvider = "FindPetById")
     public void findPetById(String petId, String responseCode, String name) {
@@ -46,9 +56,8 @@ public class PetTest extends BaseTest {
         }
     }
 
-    @Test
-    public void findPetByStatus() {
-        String status = "pending";
+    @Test(dataProvider = "FindPetByStatus")
+    public void findPetByStatus(String status) {
         Response response = httpRequest.request(Method.GET, "/pet/findByStatus?status=" + status);
 
         Assert.assertEquals(200, response.getStatusCode());
@@ -65,6 +74,7 @@ public class PetTest extends BaseTest {
 
     }
 
+    /************************************ POST ************************************/
 
     @Test
     public void createPet() {
@@ -83,8 +93,8 @@ public class PetTest extends BaseTest {
         // fara asta iti da cod eroare 415
         httpRequest.header("Content-Type", "application/json");
 
-       httpRequest.body(jsonOutput);
-       Response response = httpRequest.request(Method.POST, "/pet");
+        httpRequest.body(jsonOutput);
+        Response response = httpRequest.request(Method.POST, "/pet");
 
         Assert.assertEquals(200, response.getStatusCode());
 
@@ -100,4 +110,36 @@ public class PetTest extends BaseTest {
         httpRequest.body(requestParams.toString());
         Response response = httpRequest.request(Method.POST, "/pet");
     }
+
+    /************************************ PUT ************************************/
+
+    @Test
+    public void updatePet() {
+        String id = "732";
+
+        Response response = httpRequest.request(Method.GET, "/pet/" + id);
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        // vezi daca nu e o metoda mai scurta
+        Category cat = new Category(231, "myName");
+        Tag tag = new Tag(567, "tagName");
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+        ArrayList<String> photoUrls = new ArrayList<>();
+        photoUrls.add("http://myurl.com");
+        Pet pet = new Pet(732, cat, "MiauMiauForever", photoUrls, tags, "pending");
+
+        Gson gson = new Gson();
+        String jsonOutput = gson.toJson(pet);
+
+        httpRequest.header("Content-Type", "application/json");
+
+        httpRequest.body(jsonOutput);
+        response = httpRequest.request(Method.PUT, "/pet");
+
+        Assert.assertEquals(200, response.getStatusCode());
+
+    }
+
+    /************************************ DELETE ************************************/
 }
