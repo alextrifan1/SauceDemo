@@ -59,20 +59,22 @@ public class UserTest extends BaseTest {
         }
     }
 
-    //    @Test(dataProvider = "UserLogin")
-//    public void getUserLogin(String username, String password, String status) {
-//        Response response = httpRequest.request(Method.GET, "/user/" + "login?username=" + username+ "&password=" + password);
-//
-//        Assert.assertEquals(response.getStatusCode(), Integer.parseInt(status));
-//
-//        JsonPath jsonPathEval = response.jsonPath();
-//
+    // Asta nu e implementat de ei(25.11.2024)
+    // pune conditia ca pica oricum
+    @Test(dataProvider = "UserLogin")
+    public void getUserLogin(String username, String password, String status) {
+        Response response = httpRequest.request(Method.GET, "/user/" + "login?username=" + username+ "&password=" + password);
+
+        Assert.assertEquals(response.getStatusCode(), Integer.parseInt(status));
+
+        JsonPath jsonPathEval = response.jsonPath();
+
 //        if (response.getStatusCode() == 400) {
 //            Assert.assertEquals(jsonPathEval.getString());
 //        } else if (response.getStatusCode() == 200) {
 //
 //        }
-//    }
+    }
 
 
     /************************************ POST ************************************/

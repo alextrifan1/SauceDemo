@@ -37,7 +37,7 @@ public class PetTest extends BaseTest {
     public Iterator<Object[]> findPetDp() {
         Collection<Object[]> dp = new ArrayList<>();
         dp.add(new String[] {"222", "200", "Beagle_Eagle"});
-        dp.add(new String[] {"767", "404", ""});
+        dp.add(new String[] {"767", "200", "Goldie"});
         //dp.add(new String[] {"322", "200", "Rubye"});
         dp.add(new String[] {"10", "200", "doggie"});
         return dp.iterator();
@@ -54,15 +54,14 @@ public class PetTest extends BaseTest {
     @DataProvider(name = "DeletePet")
     public Iterator<Object[]> deletePetDp() {
         Collection<Object[]> dp = new ArrayList<>();
-        dp.add(new String[] {"200", "404"});
-        dp.add(new String[] {"732", "200"});
-
+        dp.add(new String[] {"9912321", "404"});
+        dp.add(new String[] {"767", "200"});
         return dp.iterator();
     }
 
     /************************************ GET ************************************/
 
-    @Test(dataProvider = "FindPetById")
+    @Test(dataProvider = "FindPetById", priority = 4)
     public void findPetById(String petId, String responseCode, String name) {
         Response response = httpRequest.request(Method.GET, "/pet/" + petId);
         Assert.assertEquals(response.getStatusCode(), Integer.parseInt(responseCode));
@@ -77,7 +76,7 @@ public class PetTest extends BaseTest {
         }
     }
 
-    @Test(dataProvider = "FindPetByStatus")
+    @Test(dataProvider = "FindPetByStatus", priority = 3)
     public void findPetByStatus(String status) {
         Response response = httpRequest.request(Method.GET, "/pet/findByStatus?status=" + status);
 
@@ -97,7 +96,7 @@ public class PetTest extends BaseTest {
 
     /************************************ POST ************************************/
 
-    @Test(dataProvider = "PetData")
+    @Test(dataProvider = "PetData", priority = 0)
     public void createPet(String id, String cId, String cNane, String name, String photo, String tId, String tName, String status) {
         Category cat = new Category(Integer.parseInt(cId), cNane);
         Tag tag = new Tag(Integer.parseInt(tId), tName);
@@ -121,7 +120,7 @@ public class PetTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(priority = 1)
     public void createPetOtherVersion() {
         JSONObject requestParams = new JSONObject();
         requestParams.put("id", "233");
@@ -133,9 +132,9 @@ public class PetTest extends BaseTest {
 
     /************************************ PUT ************************************/
 
-    @Test
+    @Test(priority = 2)
     public void updatePet() {
-        String id = "732";
+        String id = "999";
 
         Response response = httpRequest.request(Method.GET, "/pet/" + id);
         Assert.assertEquals(response.getStatusCode(), 200);
@@ -147,7 +146,7 @@ public class PetTest extends BaseTest {
         tags.add(tag);
         ArrayList<String> photoUrls = new ArrayList<>();
         photoUrls.add("http://myurl.com");
-        Pet pet = new Pet(732, cat, "MiauMiauForever", photoUrls, tags, "pending");
+        Pet pet = new Pet(Integer.parseInt(id), cat, "MiauMiauForever", photoUrls, tags, "pending");
 
         Gson gson = new Gson();
         String jsonOutput = gson.toJson(pet);
@@ -163,7 +162,7 @@ public class PetTest extends BaseTest {
 
     /************************************ DELETE ************************************/
 
-    @Test(dataProvider = "DeletePet")
+    @Test(dataProvider = "DeletePet", priority = 5)
     public void deletePet(String id, String status) {
         Response response = httpRequest.request(Method.DELETE, "/pet/" + id);
         Assert.assertEquals(Integer.parseInt(status), response.getStatusCode());
