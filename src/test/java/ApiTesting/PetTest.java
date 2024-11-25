@@ -105,7 +105,7 @@ public class PetTest extends BaseTest {
         tags.add(tag);
         ArrayList<String> photoUrls = new ArrayList<>();
         photoUrls.add(photo);
-        Pet pet = new Pet(732, cat, name, photoUrls, tags, status);
+        Pet pet = new Pet(Integer.parseInt(id), cat, name, photoUrls, tags, status);
 
         Gson gson = new Gson();
         String jsonOutput = gson.toJson(pet);
