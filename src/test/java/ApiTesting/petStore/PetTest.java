@@ -1,16 +1,14 @@
-package ApiTesting;
+package ApiTesting.petStore;
 
 import ApiTesting.models.Category;
 import ApiTesting.models.Pet;
 import ApiTesting.models.Tag;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openqa.selenium.devtools.v127.fetch.model.AuthChallengeResponse;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

@@ -1,4 +1,4 @@
-package ApiTesting;
+package ApiTesting.petStore;
 
 import Utils.Utils;
 import io.restassured.RestAssured;

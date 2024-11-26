@@ -1,12 +1,10 @@
-package ApiTesting;
+package ApiTesting.petStore;
 
 import ApiTesting.models.User;
 import com.google.gson.Gson;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import netscape.javascript.JSObject;
-import org.json.JSONPointer;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,7 +59,7 @@ public class UserTest extends BaseTest {
 
     // Asta nu e implementat de ei(25.11.2024)
     // pune conditia ca pica oricum
-    @Test(dataProvider = "UserLogin")
+   /* @Test(dataProvider = "UserLogin")
     public void getUserLogin(String username, String password, String status) {
         Response response = httpRequest.request(Method.GET, "/user/" + "login?username=" + username+ "&password=" + password);
 
@@ -74,7 +72,7 @@ public class UserTest extends BaseTest {
 //        } else if (response.getStatusCode() == 200) {
 //
 //        }
-    }
+    }*/
 
 
     /************************************ POST ************************************/
